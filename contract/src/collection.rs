@@ -14,20 +14,20 @@ pub struct CollectionMetaData {
 #[derive(Serialize, Deserialize)]
 #[serde(crate = "near_sdk::serde")]
 pub struct CollectionJson {
-    name: AccountId, // collection name equal account
-    creator_id: AccountId,
-    created_at: u64,
-    metadata: CollectionMetaData,
-    collection_id: CollectionId //equal collections length
+    pub name: AccountId, // collection name equal account
+    pub creator_id: AccountId,
+    pub created_at: u64,
+    pub metadata: CollectionMetaData,
+    pub collection_id: CollectionId //equal collections length
 }
 
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct CollectionData {
-    name: AccountId, // collection name equal account
-    creator_id: AccountId,
-    created_at: u64,
-    metadata: CollectionMetaData,
-    collection_id: CollectionId, //equal collections length
+    pub name: AccountId, // collection name equal account
+    pub creator_id: AccountId,
+    pub created_at: u64,
+    pub metadata: CollectionMetaData,
+    pub collection_id: CollectionId, //equal collections length
     pub schemas: UnorderedMap<SchemaId, Schema>,
     pub templates: UnorderedMap<TemplateId, Template>,
     pub tokens: UnorderedMap<TokenId, Token>,

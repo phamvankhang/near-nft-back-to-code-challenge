@@ -4,7 +4,8 @@ use crate::*;
 #[derive(Serialize, Deserialize)]
 #[serde(crate = "near_sdk::serde")]
 pub struct TemplateJson {
-    pub name: String, // collection name equal account
+    pub name: String,
+    // collection name equal account
     pub creator_id: AccountId,
     // pub created_at: TimestampSec,
     pub token_metadata: TokenMetadata,
@@ -20,7 +21,8 @@ pub struct TemplateJson {
 
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct Template {
-    pub name: String, // collection name equal account
+    pub name: String,
+    // collection name equal account
     pub creator_id: AccountId,
     // pub created_at: TimestampSec,
     pub token_metadata: TokenMetadata,
@@ -43,9 +45,13 @@ pub trait TemplateTrait {
         nft_type: String,
         schema_id: SchemaId,
         collection_id: CollectionId,
-        token_metadata: TokenMetadata
-    )->TemplateJson;
+        token_metadata: TokenMetadata,
+    ) -> TemplateJson;
 
+    // fn get_templates_by_creator_id(
+    //     &self,
+    //     creator_id: AccountId,
+    // ) -> Vec<TemplateJson>;
 }
 
 #[near_bindgen]
@@ -57,9 +63,8 @@ impl TemplateTrait for Contract {
                        nft_type: String,
                        schema_id: SchemaId,
                        collection_id: CollectionId,
-                       token_metadata: TokenMetadata
-    ) ->TemplateJson {
-
+                       token_metadata: TokenMetadata,
+    ) -> TemplateJson {
         let initial_storage_usage = env::storage_usage();
         let caller_id = env::predecessor_account_id();
 
@@ -77,7 +82,7 @@ impl TemplateTrait for Contract {
         let title = token_metadata.title.clone();
         assert!(title.is_some(), "Paras: token_metadata.title is required");
 
-        let template = Template{
+        let template = Template {
             name: name.clone(),
             token_metadata,
             schema_id: schema_id.clone(),
@@ -89,7 +94,7 @@ impl TemplateTrait for Contract {
             nft_type,
             // created_at: to_sec(env::block_timestamp()),
             max_supply: 0,
-            issued: 0
+            issued: 0,
         };
 
 
@@ -97,7 +102,7 @@ impl TemplateTrait for Contract {
 
         refund_deposit(env::storage_usage() - initial_storage_usage);
 
-        TemplateJson{
+        TemplateJson {
             name: template.name,
             creator_id: template.creator_id,
             token_metadata: template.token_metadata,
@@ -108,8 +113,35 @@ impl TemplateTrait for Contract {
             is_mintable: false,
             transferable: false,
             burnable: false,
-            issued: 0
+            issued: 0,
         }
     }
 
+    // TODO: refactor collection to ez get data
+    // fn get_templates_by_creator_id(&self, creator_id: AccountId) -> Vec<TemplateJson> {
+    //     let collection = self.collections
+    //         .iter()
+    //         .filter_map(|(key, value)| {
+    //             if value.creator_id == creator_id {
+    //                 Some((key, value))
+    //             } else {
+    //                 None
+    //             }
+    //         })
+    //         .map(|(_collection_id, col)| CollectionData {
+    //             name: col.name,
+    //             creator_id: col.creator_id,
+    //             created_at: col.created_at,
+    //             metadata: col.metadata,
+    //             collection_id: col.collection_id,
+    //             schemas: col.schemas,
+    //             templates: col.templates,
+    //             tokens: col.tokens
+    //         })
+    //         .collect();
+    //
+    //     //TODO
+    //     println!("{}", &collection);
+    //     &collection.templates.iter().collect()
+    // }
 }
