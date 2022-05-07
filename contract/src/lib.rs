@@ -6,7 +6,8 @@ use near_sdk::serde::{Deserialize, Serialize};
 use near_sdk::{
     env, near_bindgen, AccountId, Balance, CryptoHash, PanicOnDefault, Promise, PromiseOrValue,
     // serde_json::json,
-    // env:: {is_valid_account_id, panic},
+    // env::is_valid_account_id,
+    // env::panic_str,
     Timestamp
 };
 
@@ -44,10 +45,10 @@ mod events;
 //CUSTOM
 pub use crate::collection::*;
 pub use crate::schema::*;
-// pub use crate::template::*;
+pub use crate::template::*;
 mod collection;
 mod schema;
-// mod template;
+mod template;
 
 /// This is the name of the NFT standard we're using
 pub const NFT_STANDARD_NAME: &str = "nep171";
@@ -66,9 +67,11 @@ pub enum StorageKey {
     TokenTypesLocked,
 
     //CUSTOM
-    Collection,
-    Template,
-    Schema {collection: String},
+    Collections,
+    //nested
+    CollectionTemplates,
+    CollectionSchemas,
+    CollectionTokens,
     TemplateAttribute,
     TokensByTemplateInner,
     TokensByTemplateId,
@@ -147,7 +150,7 @@ impl Contract {
                 StorageKey::NFTContractMetadata.try_to_vec().unwrap(),
                 Some(&metadata),
             ),
-            collections: UnorderedMap::new(StorageKey::Collection.try_to_vec().unwrap()),
+            collections: UnorderedMap::new(StorageKey::Collections.try_to_vec().unwrap()),
             // templates: UnorderedMap::new(StorageKey::Template.try_to_vec().unwrap()),
             tokens_by_template_id: UnorderedMap::new(StorageKey::TokensByTemplateId.try_to_vec().unwrap()),
             transaction_fee: 2

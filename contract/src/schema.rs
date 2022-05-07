@@ -59,17 +59,6 @@ impl SchemaTrait for Contract {
         let mut collection = self.collections.get(&collection_id).expect("collection not exist");
 
         println!("typeof collection.schemas {}", type_of(&collection.schemas));
-        // if type_of(&collection.schemas) != "near_sdk::collections::UnorderedMap".to_string() {
-        //
-        //     // create schemas Map if not exist
-        //     collection.schemas = UnorderedMap::new(
-        //         StorageKey::Schema {
-        //             collection: collection_id.clone(),
-        //         }
-        //             .try_to_vec()
-        //             .unwrap(),
-        //     )
-        // }
 
         let schema_id = format!("{}", (collection.schemas.len() + 1));
         // let collection = self.collections.get(&collection_id);
