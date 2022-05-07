@@ -68,7 +68,7 @@ pub enum StorageKey {
     //CUSTOM
     Collection,
     Template,
-    Schema,
+    Schema {collection: String},
     TemplateAttribute,
     TokensByTemplateInner,
     TokensByTemplateId,
@@ -94,7 +94,7 @@ pub struct Contract {
 
     //CUSTOM
     pub collections: UnorderedMap<CollectionId, CollectionData>,
-    pub schemas: UnorderedMap<SchemaId, Schema>,
+    // pub schemas: UnorderedMap<SchemaId, Schema>,
     // pub templates: UnorderedMap<TemplateId, Template>,
     pub transaction_fee: u16,
 
@@ -149,7 +149,6 @@ impl Contract {
             ),
             collections: UnorderedMap::new(StorageKey::Collection.try_to_vec().unwrap()),
             // templates: UnorderedMap::new(StorageKey::Template.try_to_vec().unwrap()),
-            schemas: UnorderedMap::new(StorageKey::Schema.try_to_vec().unwrap()),
             tokens_by_template_id: UnorderedMap::new(StorageKey::TokensByTemplateId.try_to_vec().unwrap()),
             transaction_fee: 2
         };

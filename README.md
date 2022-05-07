@@ -12,8 +12,9 @@ Only one unbox experience for all games
 Same time for game developers, They should focus on game
 
 
-## repo I use in project
+## refer repo I use in project
 https://github.com/near-examples/nft-tutorial
+https://github.com/ParasHQ/paras-nft-contract.git
 
 ## Contact
 My name is Khang, You can also call me Phillip.

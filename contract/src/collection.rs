@@ -28,7 +28,8 @@ pub struct CollectionData {
     created_at: u64,
     metadata: CollectionMetaData,
     collection_id: CollectionId, //equal collections length
-    // schemas:
+    pub schemas: UnorderedMap<SchemaId, Schema>,
+    // templates: UnorderedMap<TeamplateId, Teamplate>,
 }
 
 
@@ -72,7 +73,15 @@ impl Collection for Contract {
             creator_id: caller_id,
             created_at: env::block_timestamp(),
             metadata,
-            collection_id: collection_id.clone()
+            collection_id: collection_id.clone(),
+            schemas: UnorderedMap::new(
+                StorageKey::Schema {
+                    collection: collection_id.clone(),
+                }
+                .try_to_vec()
+                .unwrap(),
+            )
+            // templates:
         };
         assert!(
             self.collections.get(&collection_id).is_none(),
