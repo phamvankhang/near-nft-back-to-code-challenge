@@ -48,6 +48,12 @@ pub trait Collection {
         &mut self,
         collection_id: CollectionId
     )->CollectionJson;
+
+    fn get_collections(
+        &self,
+        offset: Option<U128>,
+        limit: Option<u64>
+    )->Vec<CollectionJson>;
 }
 
 #[near_bindgen]
@@ -111,5 +117,28 @@ impl Collection for Contract {
             metadata: collection.metadata,
             collection_id: collection.collection_id
         }
+    }
+
+    fn get_collections(&self, offset: Option<U128>, limit: Option<u64>) ->Vec<CollectionJson> {
+        let start_index: u128 = offset.map(From::from).unwrap_or_default();
+        assert!(
+            (self.collections.len() as u128) > start_index,
+            "Out of bounds, please use a smaller offset."
+        );
+        let limit = limit.map(|v| v as usize).unwrap_or(usize::MAX);
+        assert_ne!(limit, 0, "Cannot provide limit of 0.");
+
+        self.collections
+            .iter()
+            .skip(start_index as usize)
+            .take(limit)
+            .map(|(_collection_id, collection)| CollectionJson{
+                name: collection.name,
+                creator_id: collection.creator_id,
+                created_at: collection.created_at,
+                metadata: collection.metadata,
+                collection_id: collection.collection_id,
+            })
+            .collect()
     }
 }

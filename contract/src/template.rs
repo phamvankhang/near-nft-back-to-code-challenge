@@ -15,6 +15,7 @@ pub struct TemplateJson {
     pub transferable: bool,
     pub burnable: bool,
     pub issued: usize,
+    pub nft_type: String,//NFT or BOX
 }
 
 #[derive(BorshDeserialize, BorshSerialize)]
@@ -30,6 +31,7 @@ pub struct Template {
     pub transferable: bool,
     pub burnable: bool,
     pub issued: usize,
+    pub nft_type: String,//NFT or BOX
 }
 
 pub trait TemplateTrait {
@@ -38,6 +40,7 @@ pub trait TemplateTrait {
         &mut self,
         creator_id: AccountId,
         name: String,
+        nft_type: String,
         schema_id: SchemaId,
         collection_id: CollectionId,
         token_metadata: TokenMetadata
@@ -51,6 +54,7 @@ impl TemplateTrait for Contract {
     fn create_template(&mut self,
                        creator_id: AccountId,
                        name: String,
+                       nft_type: String,
                        schema_id: SchemaId,
                        collection_id: CollectionId,
                        token_metadata: TokenMetadata
@@ -82,10 +86,12 @@ impl TemplateTrait for Contract {
             transferable: true,
             burnable: true,
             is_mintable: true,
+            nft_type,
             // created_at: to_sec(env::block_timestamp()),
             max_supply: 0,
             issued: 0
         };
+
 
         collection.templates.insert(&template_id, &template);
 
@@ -98,6 +104,7 @@ impl TemplateTrait for Contract {
             schema_id: template.schema_id,
             collection_id: template.collection_id,
             max_supply: 0,
+            nft_type: template.nft_type,
             is_mintable: false,
             transferable: false,
             burnable: false,
