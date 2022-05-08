@@ -101,7 +101,7 @@ pub struct Contract {
     // pub templates: UnorderedMap<TemplateId, Template>,
     pub transaction_fee: u16,
 
-    // pub tokens_by_template_id: UnorderedMap<TemplateId, UnorderedSet<TokenId>>,
+    pub tokens: UnorderedMap<TokenId, Token>,//find any token by id
 }
 
 
@@ -151,6 +151,7 @@ impl Contract {
                 Some(&metadata),
             ),
             collections: UnorderedMap::new(StorageKey::Collections.try_to_vec().unwrap()),
+            tokens: UnorderedMap::new(StorageKey::TokensById.try_to_vec().unwrap()),
             // templates: UnorderedMap::new(StorageKey::Template.try_to_vec().unwrap()),
             // tokens_by_template_id: UnorderedMap::new(StorageKey::TokensByTemplateId.try_to_vec().unwrap()),
             transaction_fee: 2

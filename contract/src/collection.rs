@@ -45,7 +45,7 @@ pub trait Collection {
     )->CollectionId;
 
     fn get_collection_by_id(
-        &mut self,
+        &self,
         collection_id: CollectionId
     )->CollectionJson;
 
@@ -107,7 +107,7 @@ impl Collection for Contract {
         collection_id
     }
 
-    fn get_collection_by_id(&mut self, collection_id: CollectionId) -> CollectionJson {
+    fn get_collection_by_id(&self, collection_id: CollectionId) -> CollectionJson {
         let collection = self.collections.get(&collection_id).expect("Collection does not exist");
 
         CollectionJson{

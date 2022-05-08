@@ -16,7 +16,7 @@ pub struct TemplateJson {
     pub transferable: bool,
     pub burnable: bool,
     pub issued: usize,
-    pub nft_type: String,//NFT or BOX
+    pub nft_type: String,//NFT, BOX, Whitelist
 }
 
 #[derive(BorshDeserialize, BorshSerialize)]
